@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de Búsqueda</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2c2c34; /* Fondo oscuro */
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #f0f0f0; /* Texto claro para contraste */
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Estilo para el formulario */
+        form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #3a3a42; /* Fondo más oscuro */
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Sutil sombra */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #555555; /* Bordes oscuros */
+            border-radius: 4px;
+            background-color: #2c2c34; /* Fondo oscuro para inputs */
+            color: #f0f0f0; /* Texto claro */
+        }
+
+        button {
+            background-color: #5a5aff; /* Azul llamativo */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #4848e0; /* Azul más oscuro al pasar */
+        }
+
+        /* Tabla */
+        table {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 1500px;
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #3a3a42; /* Fondo oscuro */
+            border-radius: 8px; /* Bordes redondeados */
+            overflow: hidden;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* Sombra */
+        }
+
+        th, td {
+            border: 1px solid #555555; /* Líneas internas */
+            padding: 12px;
+            text-align: center;
+            color: #f0f0f0; /* Texto claro */
+        }
+
+        th {
+            background-color: #4b4b54; /* Fondo más oscuro para encabezados */
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #484850; /* Fondo al pasar el ratón */
+        }
+
+        /* Título y encabezados */
+        h1, h2 {
+            color: #ffffff;
+        }
+        .back-button {
+            display: inline-block;
+            background-color: #5a5aff; /* Azul llamativo */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none; /* Elimina el subrayado */
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s ease; /* Suaviza el cambio de color */
+        }
+
+        .back-button:hover {
+            background-color: #4848e0; /* Azul más oscuro al pasar */
+        }
+    
+    </style>
+</head>
+<body>
+    <h1>Resultados de Búsqueda para "{{ search_term }}"</h1>
+
+    {% if results %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Teléfono</th>
+                    <th>Correo Electrónico</th>
+                    <th>Contratos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in results %}
+                    <tr>
+                        <td>{{ record.Nombre }}</td>
+                        <td>{{ record.Apellido }}</td>
+                        <td>{{ record.Telefono }}</td>
+                        <td>{{ record.CorreoElectronico if record.CorreoElectronico else 'N/A' }}</td>
+                        <td>
+                            {% if record.TipoContrato %}
+                                <p>{{ record.TipoContrato }} ({{ record.FechaInicio }})
+                                {% if 'Compro' not in record.TipoContrato %}
+                                    - {{ record.FechaFin }}
+                                {% endif %}
+                                </p>
+                            {% else %}
+                                <p>No tiene contrato asociado</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No se encontraron resultados para "{{ search_term }}".</p>
+    {% endif %}
+
+    <a href="/" class="back-button">Volver a Inicio</a>
+</body>
+</html>
